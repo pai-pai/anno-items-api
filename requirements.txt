@@ -1,6 +1,6 @@
 flask
 flask-smorest
-python-dotenv
+flask-cors
 Flask-PyMongo
-bson
+python-dotenv
 marshmallow
