@@ -1,7 +1,16 @@
-FROM python:3.9-bullseye
-EXPOSE 5000
+FROM python:3.9-slim-buster
+
+LABEL Name="Anno 1800 Items API" Version=1.0.0
+LABEL org.opencontainers.image.source = "https://github.com/pai-pai/anno-items-api"
+
+ARG srcDir=src
 WORKDIR /app
-COPY requirements.txt .
-RUN pip install --no-cache-dir --upgrade -r requirements.txt
-COPY . .
-CMD ["flask", "run", "--host", "0.0.0.0"]
+COPY $srcDir/requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY $srcDir/run.py .
+COPY $srcDir/app ./app
+
+EXPOSE 5000
+
+CMD ["gunicorn", "-b", "0.0.0.0:5000", "run:app"]

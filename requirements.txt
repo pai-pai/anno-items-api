@@ -1,6 +1,0 @@
-flask
-flask-smorest
-flask-cors
-Flask-PyMongo
-python-dotenv
-marshmallow
