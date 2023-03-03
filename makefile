@@ -13,6 +13,9 @@ run: venv
 	. $(SRC_DIR)/.venv/bin/activate \
 	&& python src/run.py
 
+test: venv
+	. $(SRC_DIR)/.venv/bin/activate \
+	&& pytest -v
 
 venv: $(SRC_DIR)/.venv/touchfile
 

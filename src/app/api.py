@@ -1,12 +1,16 @@
 import re
 
+from flask_pymongo import (
+    ASCENDING,
+    DESCENDING,
+) 
+
 from flask import (
-    current_app as app,
-    jsonify,
+    Blueprint,
     request,
 )
-from flask_pymongo import PyMongo
 
+from app.database import mongo
 from app.schemas import (
     ShipSchema,
     SupplySchema,
@@ -14,7 +18,7 @@ from app.schemas import (
 )
 
 
-mongo = PyMongo(app)
+bp = Blueprint("api", __name__, url_prefix='/api')
 
 
 EQUIPPED_MAPPING = {
@@ -73,7 +77,7 @@ def _construct_query(fields, params):
         if param == 'sort':
             for sort_field in param_values:
                 sort_option, sort_field = re.match(r"^(-)?([\w.]+)", sort_field).groups()
-                order[sort_field] = 1 if sort_option is None else -1
+                order[sort_field] = ASCENDING if sort_option is None else DESCENDING
             continue
         if param not in fields:
             # skip if passed 'param' is not in scheme's fields and it is not sort option
@@ -98,7 +102,7 @@ def _construct_query(fields, params):
     return query, order
 
 
-@app.get("/api/items")
+@bp.route("/items")
 def get_items():
     # order by:
     # - Name
@@ -119,12 +123,7 @@ def get_items():
         ('rarity', 'dlc', 'traits', 'name'),
         request.args
     )
-    if "name" not in orderby:
-        orderby["name"] = 1
-    items = mongo.db.items.find({
-        "$query": query,
-        "$orderby": orderby or { "rarity_order": 1, "name": 1 }
-    })
+    items = mongo.db.items.find(query, sort=list(orderby.items()) or [("name", ASCENDING)])
     rarities = mongo.db.items.aggregate([
 	    {
             "$group": {
@@ -132,21 +131,21 @@ def get_items():
                 "rarity_order": { "$first" : "$rarity_order" }
             }
         },
-        { "$sort": { "rarity_order": 1 } },
+        { "$sort": { "rarity_order": ASCENDING } },
     ])
     dlcs = mongo.db.items.distinct("dlc")
     traits = mongo.db.items.distinct("traits")
     return {
         "objects": [ItemSchema().dump(item) for item in items],
         "_filters": {
-            "rarity": [el.get("_id").get("rarity").title() for el in list(rarities)],
-            "dlc": dlcs,
-            "traits": traits,
+            "rarity": [el.get("_id").get("rarity") for el in list(rarities)],
+            "dlc": sorted(dlcs),
+            "traits": sorted(traits),
         }
     }, 200
 
 
-@app.get("/api/ships")
+@bp.route("/ships")
 def get_ships():
     # order by:
     # - Name
@@ -159,18 +158,18 @@ def get_ships():
     # -- Sailing ship
     # -- ...
     query, orderby = _construct_query(ShipSchema._declared_fields, request.args)
-    ships = mongo.db.ships.find({ "$query": query, "$orderby": (orderby or { "name": 1 }) })
+    ships = mongo.db.ships.find(query, sort=list(orderby.items()) or [("name", ASCENDING)])
     ship_types = mongo.db.ships.distinct("types")
     return {
         "objects": [ShipSchema().dump(ship) |
                     {"equipped_in": _get_ship_items_filters(ship)} for ship in ships],
         "_filters": {
-            "types": ship_types
+            "types": sorted(ship_types)
         }
     }, 200
 
 
-@app.get("/api/supplies")
+@bp.route("/supplies")
 def get_supplies():
     # order by:
     # - Name
@@ -226,7 +225,7 @@ def get_supplies():
                 }
             }
         },
-        { "$sort": (orderby or { "name": 1 }) }
+        { "$sort": (orderby or { "name": ASCENDING }) }
     ])
     return {
         "objects": [SupplySchema().dump(supply) for supply in supplies],

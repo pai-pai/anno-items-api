@@ -5,7 +5,7 @@ class BaseSchema(Schema):
     _id = fields.Str(dump_only=True)
     name = fields.Str(dump_only=True)
     bonuses = fields.Dict(keys=fields.Str(), values=fields.Int(), dump_only=True)
-    image_src = fields.Url(dump_only=True)
+    #image_src = fields.Url(dump_only=True)
 
 
 class ShipSchema(BaseSchema):
