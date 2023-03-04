@@ -3,6 +3,9 @@ FROM python:3.9-slim-buster
 LABEL Name="Anno 1800 Items API" Version=1.0.0
 LABEL org.opencontainers.image.source = "https://github.com/pai-pai/anno-items-api"
 
+RUN apt-get update && \
+    apt-get install -y git
+
 ARG srcDir=src
 WORKDIR /app
 COPY $srcDir/requirements.txt .

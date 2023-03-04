@@ -2,11 +2,10 @@ IMAGE_REG ?= ghcr.io
 IMAGE_REPO ?= pai-pai/anno-items-api
 IMAGE_TAG ?= latest
 
-
 SRC_DIR := src
 
-image:  ## 🔨 Build container image from Dockerfile 
-	docker build . --file build/Dockerfile \
+image:
+	docker build . --file Dockerfile \
 	--tag $(IMAGE_REG)/$(IMAGE_REPO):$(IMAGE_TAG)
 
 run: venv
