@@ -18,4 +18,4 @@ COPY $srcDir/app ./app
 
 EXPOSE ${API_PORT}
 
-CMD ["gunicorn", "-b", "0.0.0.0:${API_PORT}", "run:app"]
+CMD ["gunicorn", "-b", "0.0.0.0:$API_PORT", "run:app"]
