@@ -7,6 +7,8 @@ RUN apt-get update && \
     apt-get install -y git
 
 ARG srcDir=src
+ENV API_PORT=5000
+
 WORKDIR /app
 COPY $srcDir/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
@@ -14,6 +16,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY $srcDir/run.py .
 COPY $srcDir/app ./app
 
-EXPOSE 5000
+EXPOSE ${API_PORT}
 
-CMD ["gunicorn", "-b", "0.0.0.0:5000", "run:app"]
+CMD ["gunicorn", "-b", "0.0.0.0:${API_PORT}", "run:app"]
