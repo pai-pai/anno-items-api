@@ -18,7 +18,7 @@ from app.schemas import (
 )
 
 
-bp = Blueprint("api", __name__, url_prefix='/api')
+bp = Blueprint("api", __name__)
 
 
 EQUIPPED_MAPPING = {

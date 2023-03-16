@@ -1,6 +1,6 @@
 FROM python:3.9-slim-buster
 
-LABEL Name="Anno 1800 Items API" Version=1.0.0
+LABEL Name="Anno 1800 Items API" Version=1.0.1
 LABEL org.opencontainers.image.source = "https://github.com/pai-pai/anno-items-api"
 
 RUN apt-get update && \
@@ -18,4 +18,4 @@ COPY $srcDir/app ./app
 
 EXPOSE ${API_PORT}
 
-CMD ["gunicorn", "-b", "0.0.0.0:$API_PORT", "run:app"]
+CMD gunicorn -b 0.0.0.0:${API_PORT} run:app

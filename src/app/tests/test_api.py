@@ -13,7 +13,7 @@ def test_items(client, mongo):
     for index, item in enumerate(items_data):
         item["_id"] = str(inserted[index])
 
-    response = client.get('api/items')
+    response = client.get('items')
     assert response.status_code == 200
     expected = {
         "objects": sorted(items_data, key=lambda item: (item["name"], item["rarity_order"])),
@@ -46,7 +46,7 @@ def test_ships(client, mongo):
         ship["_id"] = str(inserted[index])
         ship["equipped_in"] = equipped_in[index]
 
-    response = client.get("api/ships")
+    response = client.get("ships")
     assert response.status_code == 200
     expected = {
         "objects": sorted(ships_data, key=lambda ship: ship["name"]),
@@ -125,7 +125,7 @@ def test_supplies(client, mongo):
     expected_objects = supplies_data[:3]
     expected_objects[2]["bonuses"]["hunting"] = 20
 
-    response = client.get("api/supplies")
+    response = client.get("supplies")
     assert response.status_code == 200
     expected = {
         "objects": sorted(expected_objects, key=lambda supply: supply["name"]),

@@ -1,6 +1,6 @@
 variables:
   IMAGE_NAME: dtoguzova/anno-items-api
-  IMAGE_TAG: api-1.0
+  IMAGE_TAG: api-1.0.1
 
 
 stages:
