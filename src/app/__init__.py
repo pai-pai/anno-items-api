@@ -1,5 +1,4 @@
 from flask import Flask
-from flask_cors import CORS
 
 from app.database import mongo
 
@@ -12,8 +11,5 @@ def create_app(db_uri: str) -> Flask:
 
     from . import api
     app.register_blueprint(api.bp)
-    #with app.app_context():
-    #    from . import api
-    CORS(app, resources={r"/api/*": {"origins": "*"}})
 
     return app

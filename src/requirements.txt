@@ -1,5 +1,4 @@
 Flask==2.2.3
-Flask-Cors==3.0.10
 Flask-PyMongo==2.3.0
 flask-smorest==0.40.0
 gunicorn==20.1.0
