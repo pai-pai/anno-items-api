@@ -21,13 +21,6 @@ def mocked_mongo(monkeysession):
     monkeysession.setattr("app.database.mongo", PyMongoMock())
 
 
-#@pytest.fixture(scope="session")
-#def mocked_mongo(monkeypatch):
-#    monkeypatch.setattr("app.database.mongo", PyMongoMock())
-#    from app.database import mongo
-#    yield mongo
-
-
 @pytest.fixture(scope="session")
 def client(mocked_mongo):
     flask_app = create_app("mongodb://localhost:27017/test")
