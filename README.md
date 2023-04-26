@@ -6,6 +6,7 @@ API for [Anno 1800 Expeditions Helper](https://www.anno-expeditions.app/) projec
 
 ### Request
 `GET /items`
+
 `curl -i -H 'Accept: application/json' http://localhost:5050/items`
 
 ### Response
@@ -93,6 +94,7 @@ Access-Control-Allow-Origin: *
 
 ### Request
 `GET /ships`
+
 `curl -i -H 'Accept: application/json' http://localhost:5050/ships`
 
 ### Response
@@ -156,6 +158,7 @@ Access-Control-Allow-Origin: *
 
 ### Request
 `GET /supplies`
+
 `curl -i -H 'Accept: application/json' http://localhost:5050/supplies`
 
 ### Response
