@@ -104,21 +104,6 @@ def _construct_query(fields, params):
 
 @bp.route("/items")
 def get_items():
-    # order by:
-    # - Name
-    # - Rarity (rarity_order)
-    # -----
-    # filter by:
-    # - Rarity
-    # -- Common
-    # -- Uncommon
-    # -- Rare
-    # -- Epic
-    # -- Legendary
-    # - DLC
-    # -- ...
-    # - Traits
-    # -- ...
     query, orderby = _construct_query(
         ('rarity', 'dlc', 'traits', 'name'),
         request.args
@@ -147,16 +132,6 @@ def get_items():
 
 @bp.route("/ships")
 def get_ships():
-    # order by:
-    # - Name
-    # - Number of Slots
-    # -----
-    # filter by:
-    # - Type
-    # -- Hybrid
-    # -- Military ship
-    # -- Sailing ship
-    # -- ...
     query, orderby = _construct_query(ShipSchema._declared_fields, request.args)
     ships = mongo.db.ships.find(query, sort=list(orderby.items()) or [("name", ASCENDING)])
     ship_types = mongo.db.ships.distinct("types")
@@ -171,19 +146,6 @@ def get_ships():
 
 @bp.route("/supplies")
 def get_supplies():
-    # order by:
-    # - Name
-    # - Morale (combined_morale_per_50t)
-    # -----
-    # filter by:
-    # - Ration Bonus
-    # -- Yes
-    # -- No
-    # - Expedition Bonus
-    # -- Crafting
-    # -- Diplomacy
-    # -- Faith
-    # -- ...
     query, orderby = _construct_query(
         ('extra_rations', 'bonuses', 'name'),
         request.args
