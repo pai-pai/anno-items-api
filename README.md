@@ -204,7 +204,6 @@ Access-Control-Allow-Origin: *
 | `/supplies?&name__contains=sa`           | Retrieve supplies filtered by name. |
 | `/supplies?sort=-bonuses.medicine`       | Retrieve all supplies ordered by medicine bonuse in descending order. |
 
-_____
 
 ## Technology stack
 
