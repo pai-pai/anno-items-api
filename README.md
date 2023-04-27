@@ -203,3 +203,11 @@ Access-Control-Allow-Origin: *
 | `/supplies`                              | Retrieve all supplies.                   |
 | `/supplies?&name__contains=sa`           | Retrieve supplies filtered by name. |
 | `/supplies?sort=-bonuses.medicine`       | Retrieve all supplies ordered by medicine bonuse in descending order. |
+
+_____
+
+## Technology stack
+
+- Flask -- for API implementation. 
+- PyMongo -- to interact with MongoDB.
+- pytest -- for testing.
