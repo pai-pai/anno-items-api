@@ -7,6 +7,7 @@ stages:
   - test
   - build
 
+
 run_tests:
   stage: test
   image: python:3.9-slim-buster
@@ -15,7 +16,12 @@ run_tests:
   script:
     - make test
 
+
 build_image:
+  rules:
+    - if: $CI_COMMIT_BRANCH == "master"
+      changes:
+        - Dockerfile
   stage: build
   image: docker:23.0.1
   services:
